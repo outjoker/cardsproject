@@ -33,6 +33,9 @@ func main() {
 	remainingCardsInDeck.print()
 	fmt.Println("------------------------")
 
+	// saving deck to file
+	cards.saveToFile("bala_cards")
+
 }
 
 func newCard() string {
