@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"io/ioutil"
+	"strings"
+)
 
 // create a new custom type of `deck` which is slice of strings
 type deck []string
@@ -34,5 +38,22 @@ func (d deck) print() {
 func deal(d deck, handSize int) (deck, deck) {
 
 	return d[:handSize], d[handSize:]
+
+}
+
+func (d deck) toString() string {
+	// this functions takes deck (slice of strings) as input and convert that as a string and return it
+	// converting deck to slice of strings
+
+	return strings.Join([]string(d), ",") // this will join the strings in the slice with comma as the separator
+}
+
+//save the decks to local file system
+// 1. take the dec and convert it to a slice of strings
+// 2. join the slice of strings and convert it to a string with commma as the separator
+// 3. convert the string to byte slice []byte(string)
+// we can call the function in this manner, cards.saveToFile, if we implement this function as receiver function
+func (d deck) saveToFile(filename string) error {
+	return ioutil.WriteFile(filename, []byte(d.toString()), 0666) // the last param is file permission currently it is 0666 which is all can read and write
 
 }
