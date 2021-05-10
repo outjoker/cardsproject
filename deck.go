@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
 	"strings"
 )
 
@@ -56,4 +57,21 @@ func (d deck) toString() string {
 func (d deck) saveToFile(filename string) error {
 	return ioutil.WriteFile(filename, []byte(d.toString()), 0666) // the last param is file permission currently it is 0666 which is all can read and write
 
+}
+
+// after getting the filename as input,this function should return a deck accordingly
+func getNewDeckFromFile(fileName string) deck {
+	byteSliceReceived, error := ioutil.ReadFile(fileName)
+	// byteSliceReceived will be the string of chars/ string of cards separated by comma
+	// error will catch the value of type error, if all is well error will be nil
+	if error != nil {
+		fmt.Println("error in reading the file: ", error)
+		// if we are not able to load a deck from file, we can call newDeck() declared on top as a fallback approach
+		os.Exit(1) // reason 1 is being passed is, if Exit(0)=> it indicates no error and vice-versa
+	}
+	// convert the byteslice => string => slice of strings => deck
+	// string(byteSliceReceived) // the value would be Ace of spaces, two of diamonds
+	// now we should convert this whole string to slice of strings, so we use strings.Split(string, delimiter)
+	sliceOfStrings := strings.Split(string(byteSliceReceived), ",")
+	return deck(sliceOfStrings)
 }
