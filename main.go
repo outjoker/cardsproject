@@ -22,6 +22,7 @@ func main() {
 	// }
 
 	cards := newDeck()
+	filename := "bala_cards"
 	//cards.print()
 
 	hand, remainingCardsInDeck := deal(cards, 5)
@@ -34,7 +35,12 @@ func main() {
 	fmt.Println("------------------------")
 
 	// saving deck to file
-	cards.saveToFile("bala_cards")
+	cards.saveToFile(filename)
+
+	// reading deck from file and returning
+	newDeckOfCards := getNewDeckFromFile(filename)
+	// since newDeckOfCards is of type dec, we can use the receiver function print() from deck.go
+	newDeckOfCards.print()
 
 }
 
