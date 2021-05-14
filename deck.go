@@ -3,8 +3,10 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"math/rand"
 	"os"
 	"strings"
+	"time"
 )
 
 // create a new custom type of `deck` which is slice of strings
@@ -74,4 +76,26 @@ func getNewDeckFromFile(fileName string) deck {
 	// now we should convert this whole string to slice of strings, so we use strings.Split(string, delimiter)
 	sliceOfStrings := strings.Split(string(byteSliceReceived), ",")
 	return deck(sliceOfStrings)
+}
+
+func (d deck) shuffleCards() {
+	// this function receives a deck as it is a receiver
+
+	// generating random source which generates the random numbers, by making the source random, everytime the generation also becomes
+	// random
+	// this source shouldn't be the same whenever we run this program
+	// for that matter we can use the UnixNano() of the time package
+	// which means everytime we run this program, it will take the current time*/
+	source := rand.NewSource(time.Now().UnixNano())
+	randomNumber := rand.New(source) // the value of randomNumber is of type rand and it can use rand functions
+
+	for indexOfCard := range d {
+		//randomPosition := rand.Intn(len(d) - 1)
+		randomPosition := randomNumber.Intn(len(d) - 1)
+
+		// swapping card at index as the randomposition with card at current index in the slice of decks
+		d[indexOfCard], d[randomPosition] = d[randomPosition], d[indexOfCard]
+
+	}
+
 }
