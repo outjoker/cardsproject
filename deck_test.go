@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"testing"
 )
 
@@ -35,4 +36,18 @@ func TestLastCardInTheDeckIsFourOfClubs(t *testing.T) {
 		t.Errorf("expected last card to be Four of Clubs, but got %v", d[len(d)-1])
 	}
 
+}
+
+func TestSaveToDeckAndNewDeckFromFile(t *testing.T) {
+	os.Remove("_decktesting")
+	deck := newDeck()
+	deck.saveToFile("_decktesting")
+
+	loadedDeck := getNewDeckFromFile("_decktesting")
+
+	if len(loadedDeck) != 16 {
+		t.Errorf("expected 16 cards in the deck , but got %v ", len(loadedDeck))
+	}
+
+	os.Remove("_decktesting")
 }
